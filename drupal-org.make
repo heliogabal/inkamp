@@ -7,12 +7,6 @@ api = "2"
 projects[admin_menu][version] = "3.0-rc4"
 projects[admin_menu][subdir] = "contrib"
 
-projects[crm_core][version] = "0.91"
-projects[crm_core][subdir] = "contrib"
-
-projects[crm_core_profile][version] = "1.0-alpha1"
-projects[crm_core_profile][subdir] = "contrib"
-
 projects[context][version] = "3.0-beta6"
 projects[context][subdir] = "contrib"
 
@@ -27,12 +21,6 @@ projects[addressfield][subdir] = "contrib"
 
 projects[ctools][version] = "1.3"
 projects[ctools][subdir] = "contrib"
-
-;projects[ns_core][version] = "2.0-rc5"
-;projects[ns_core][subdir] = "contrib"
-
-;projects[profiler_builder][version] = "1.0-rc4"
-;projects[profiler_builder][subdir] = "contrib"
 
 projects[features][version] = "2.0-beta2"
 projects[features][subdir] = "contrib"
@@ -51,7 +39,7 @@ projects[libraries][subdir] = contrib
 
 projects[link][version] = "1.1"
 projects[link][subdir] = "contrib"
-projects[link][patch][] = http://drupal.org/files/Fixed_title_value_in_link_field_update_instance_undefined-1914286-3.patch
+projects[link][patch][] = "http://drupal.org/files/Fixed_title_value_in_link_field_update_instance_undefined-1914286-3.patch"
 
 projects[references_dialog][version] = "1.0-alpha4"
 projects[references_dialog][subdir] = "contrib"
@@ -73,12 +61,6 @@ projects[media][subdir] = "contrib"
 
 projects[media_youtube][version] = 2.0-rc2
 projects[media_youtube][subdir] = contrib
-
-projects[entity_translation][version] = "1.0-beta2"
-projects[entity_translation][subdir] = "contrib"
-
-projects[i18n][version] = "1.8"
-projects[i18n][subdir] = "contrib"
 
 projects[diff][version] = 3.2
 projects[diff][subdir] = contrib
@@ -272,14 +254,21 @@ projects[shiny][version] = "1.1"
 projects[shiny][subdir] = "contrib"
 
 ; poultry
-projects[poultry][type] = "theme"
-projects[poultry][version] = "1.0"
-projects[poultry][subdir] = "contrib"
+;projects[poultry][type] = "theme"
+;projects[poultry][version] = "1.0"
+;projects[poultry][subdir] = "contrib"
 
 ; ember
-projects[ember][type] = "theme"
-projects[ember][version] = "1.0-alpha5"
-projects[ember][subdir] = "contrib"
+;projects[ember][type] = "theme"
+;projects[ember][version] = "1.0-alpha5"
+;projects[ember][subdir] = "contrib"
+
+; omega
+;projects[omega][type] = theme
+;projects[omega][version] = 3.1
+;projects[omega][download][type] = git
+;projects[omega][download][url] = http://git.drupal.org/project/omega.git
+;projects[omega][download][branch] = 7.x-3.x
 
 
 ; +++++++ Libraries +++++++

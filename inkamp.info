@@ -2,6 +2,7 @@ name = INKamp
 description = INKOTA Kampagnen Distro
 core = 7.x
 distribution_name = inkamp
+theme = mcf
 
 ; Install necessary core modules.
 dependencies[] = block
@@ -129,3 +130,27 @@ dependencies[] = crm_core_devel_generate
 
 ; System Requirements.
 php_memory_limit = 128M
+
+; -----------------------------------------------------------------------------
+;                                   Users
+; -----------------------------------------------------------------------------
+
+
+users[superduper][uid]    = 1
+users[superduper][name]   = rainer
+users[superduper][mail]   = rhalbmann@gmail.com
+users[superduper][roles]  = Admin,Publisher
+users[superduper][status] = 1
+
+;users[siteadmin][uid]    = 2
+;users[siteadmin][name]   = siteadmin
+;users[siteadmin][mail]   = changeme@changeme
+;users[siteadmin][roles]  = Admin,Publisher
+;users[siteadmin][status] = 1
+
+; -----------------------------------------------------------------------------
+;                                  Variables
+; -----------------------------------------------------------------------------
+
+variables[site_name] = Make Chocolate Fair
+variables[site_mail] = rhalbmann@gmail.com
