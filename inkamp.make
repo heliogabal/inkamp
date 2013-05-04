@@ -8,11 +8,11 @@ api = "2"
 ; +++++ Themes +++++
 
 ; omega
-projects[omega][type] = theme
-projects[omega][version] = 3.1
-projects[omega][download][type] = git
-projects[omega][download][url] = "http://git.drupal.org/project/omega.git"
-projects[omega][download][branch] = 7.x-3.x
+;projects[omega][type] = theme
+;projects[omega][version] = 3.1
+;projects[omega][download][type] = git
+;projects[omega][download][url] = "http://git.drupal.org/project/omega.git"
+;projects[omega][download][branch] = 7.x-3.x
 
 ; mcf
 projects[mcf][type] = theme
