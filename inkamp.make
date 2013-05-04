@@ -27,7 +27,7 @@ projects[omega][version] = "4.0-beta3"
 projects[mcf_theme][type] = "theme"
 projects[mcf_theme][version] = "1.0-alpha1"
 ;projects[mcf][download][type] = "url"
-projects[mcf_theme][location] = http://features.otro-mundo.org
+projects[mcf_theme][location] = http://features.otro-mundo.org/node/6
 
 
 ; +++++++ Libraries +++++++
