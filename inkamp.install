@@ -298,7 +298,7 @@ function inkamp_install() {
 //  if ($account = user_load(1)) {
 //	  crm_user_sync_sync($account);
 //  }
-//}
+}
 
 /**
  * Implements hook_install_tasks_alter().
