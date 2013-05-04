@@ -26,8 +26,8 @@ projects[omega][version] = "4.0-beta3"
 ; mcf
 projects[mcf_theme][type] = "theme"
 projects[mcf_theme][version] = "1.0-alpha1"
-;projects[mcf][download][type] = "url"
-projects[mcf_theme][location] = http://features.otro-mundo.org/fserver
+projects[mcf_theme][download][type] = "url"
+projects[mcf_theme][location] = http://features.otro-mundo.org/sites/features.otro-mundo.org/files/fserver/mcf_theme.tar_.gz
 
 
 ; +++++++ Libraries +++++++
