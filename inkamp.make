@@ -6,13 +6,13 @@ api = "2"
 
 projects[inkota_petition][version] = 1.0-alpha2
 projects[inkota_petition][type] = module
-projects[inkota_petitions][subdir] = "custom"
+projects[inkota_petition][subdir] = "custom"
 projects[inkota_petition][location] = http://features.otro-mundo.org/fserver
 
-projects[inkota_multilingual][version] = 1.0-alpha2
-projects[inkota_multilingual][type] = module
-projects[inkota_multilingual][subdir] = "custom"
-projects[inkota_multilingual][location] = http://features.otro-mundo.org/fserver
+;projects[inkota_multilingual][version] = 1.0-alpha2
+;projects[inkota_multilingual][type] = module
+;projects[inkota_multilingual][subdir] = "custom"
+;projects[inkota_multilingual][location] = http://features.otro-mundo.org/fserver
 
 ; +++++ Themes +++++
 
