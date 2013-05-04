@@ -1,0 +1,599 @@
+<?php
+
+/**
+ * Implements hook_install().
+ *
+ * Performs actions to set up the site for this profile.
+ *
+ * @see system_install()
+ */
+function inkamp_install() {
+
+  // enable the default theme
+  $default_theme = variable_get('theme_default', 'crm_core_demo');
+
+  // Enable some standard blocks.
+  // removing standard block configuration
+  /*
+  $values = array(
+    array(
+      'module' => 'system',
+      'delta' => 'main',
+      'theme' => $default_theme,
+      'status' => 1,
+      'weight' => 0,
+      'region' => 'content',
+      'pages' => '',
+      'cache' => -1,
+    ),
+    array(
+      'module' => 'user',
+      'delta' => 'login',
+      'theme' => $default_theme,
+      'status' => 1,
+      'weight' => 0,
+      'region' => 'sidebar_second',
+      'pages' => '',
+      'cache' => -1,
+    ),
+    array(
+      'module' => 'system',
+      'delta' => 'navigation',
+      'theme' => $default_theme,
+      'status' => 1,
+      'weight' => 0,
+      'region' => 'sidebar_second',
+      'pages' => '',
+      'cache' => -1,
+    ),
+    array(
+      'module' => 'system',
+      'delta' => 'management',
+      'theme' => $default_theme,
+      'status' => 1,
+      'weight' => 1,
+      'region' => 'sidebar_second',
+      'pages' => '',
+      'cache' => -1,
+    ),
+    array(
+      'module' => 'system',
+      'delta' => 'help',
+      'theme' => $default_theme,
+      'status' => 1,
+      'weight' => 0,
+      'region' => 'help',
+      'pages' => '',
+      'cache' => -1,
+    ),
+  );
+  $query = db_insert('block')->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache'));
+  foreach ($values as $record) {
+    $query->values($record);
+  }
+  $query->execute();
+  */
+
+  // Insert default pre-defined node types into the database. For a complete
+  // list of available node type attributes, refer to the node type API
+  // documentation at: http://api.drupal.org/api/HEAD/function/hook_node_info.
+  $types = array(
+    array(
+      'type' => 'page',
+      'name' => st('Basic page'),
+      'base' => 'node_content',
+      'description' => st("Use <em>basic pages</em> for your static content, such as an 'About us' page."),
+      'custom' => 1,
+      'modified' => 1,
+      'locked' => 0,
+    ),
+    array(
+      'type' => 'article',
+      'name' => st('Article'),
+      'base' => 'node_content',
+      'description' => st('Use <em>articles</em> for time-sensitive content like news, press releases or blog posts.'),
+      'custom' => 1,
+      'modified' => 1,
+      'locked' => 0,
+    ),
+  );
+
+  foreach ($types as $type) {
+    $type = node_type_set_defaults($type);
+    node_type_save($type);
+    node_add_body_field($type);
+  }
+
+  // Insert default pre-defined RDF mapping into the database.
+  $rdf_mappings = array(
+    array(
+      'type' => 'node',
+      'bundle' => 'page',
+      'mapping' => array(
+        'rdftype' => array('foaf:Document'),
+      ),
+    ),
+    array(
+      'type' => 'node',
+      'bundle' => 'article',
+      'mapping' => array(
+        'field_image' => array(
+          'predicates' => array('og:image', 'rdfs:seeAlso'),
+          'type' => 'rel',
+        ),
+        'field_tags' => array(
+          'predicates' => array('dc:subject'),
+          'type' => 'rel',
+        ),
+      ),
+    ),
+  );
+  foreach ($rdf_mappings as $rdf_mapping) {
+    rdf_mapping_save($rdf_mapping);
+  }
+
+  // Default "Basic page" to not be promoted and have comments disabled.
+  variable_set('node_options_page', array('status'));
+  variable_set('comment_page', COMMENT_NODE_HIDDEN);
+
+  // Don't display date and author information for "Basic page" nodes by default.
+  variable_set('node_submitted_page', FALSE);
+
+
+  // Create an image field named "Image", enabled for the 'article' content type.
+  // Many of the following values will be defaulted, they're included here as an illustrative examples.
+  // See http://api.drupal.org/api/function/field_create_field/7
+
+  $field = array(
+    'field_name' => 'field_image',
+    'type' => 'image',
+    'cardinality' => 1,
+    'locked' => FALSE,
+    'indexes' => array('fid' => array('fid')),
+    'settings' => array(
+      'uri_scheme' => 'public',
+      'default_image' => FALSE,
+    ),
+    'storage' => array(
+      'type' => 'field_sql_storage',
+      'settings' => array(),
+    ),
+  );
+  field_create_field($field);
+
+
+  // Many of the following values will be defaulted, they're included here as an illustrative examples.
+  // See http://api.drupal.org/api/function/field_create_instance/7
+  $instance = array(
+    'field_name' => 'field_image',
+    'entity_type' => 'node',
+    'label' => 'Image',
+    'bundle' => 'article',
+    'description' => st('Upload an image to go with this article.'),
+    'required' => FALSE,
+
+    'settings' => array(
+      'file_directory' => 'field/image',
+      'file_extensions' => 'png gif jpg jpeg',
+      'max_filesize' => '',
+      'max_resolution' => '',
+      'min_resolution' => '',
+      'alt_field' => TRUE,
+      'title_field' => '',
+    ),
+
+    'widget' => array(
+      'type' => 'image_image',
+      'settings' => array(
+        'progress_indicator' => 'throbber',
+        'preview_image_style' => 'thumbnail',
+      ),
+      'weight' => -1,
+    ),
+
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'type' => 'image',
+        'settings' => array('image_style' => 'large', 'image_link' => ''),
+        'weight' => -1,
+      ),
+      'teaser' => array(
+        'label' => 'hidden',
+        'type' => 'image',
+        'settings' => array('image_style' => 'medium', 'image_link' => 'content'),
+        'weight' => -1,
+      ),
+    ),
+  );
+  field_create_instance($instance);
+
+  // Allow visitor account creation, but with administrative approval.
+  variable_set('user_register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL);
+
+  // Enable default permissions for system roles.
+  user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content'));
+  user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content'));
+
+  // Create default input formats
+  $filtered_html_format = array(
+    'format' => 'filtered_html',
+    'name' => 'Filtered HTML',
+    'weight' => 0,
+    'filters' => array(
+      // URL filter.
+      'filter_url' => array(
+        'weight' => 0,
+        'status' => 1,
+      ),
+      // HTML filter.
+      'filter_html' => array(
+        'weight' => 1,
+        'status' => 1,
+      ),
+      // Line break filter.
+      'filter_autop' => array(
+        'weight' => 2,
+        'status' => 1,
+      ),
+      // HTML corrector filter.
+      'filter_htmlcorrector' => array(
+        'weight' => 3,
+        'status' => 1,
+      ),
+      // Pathologic
+      'pathologic' => array(
+        'weight' => 4,
+        'status' => 1,
+      ),
+    ),
+  );
+  $filtered_html_format = (object) $filtered_html_format;
+  filter_format_save($filtered_html_format);
+
+  $full_html_format = array(
+    'format' => 'full_html',
+    'name' => 'Full HTML',
+    'weight' => 1,
+    'filters' => array(
+      // URL filter.
+      'filter_url' => array(
+        'weight' => 0,
+        'status' => 1,
+      ),
+      // Line break filter.
+      'filter_autop' => array(
+        'weight' => 1,
+        'status' => 1,
+      ),
+      // HTML corrector filter.
+      'filter_htmlcorrector' => array(
+        'weight' => 10,
+        'status' => 1,
+      ),
+      // Pathologic
+      'pathologic' => array(
+        'weight' => 4,
+        'status' => 1,
+      ),
+    ),
+  );
+  $full_html_format = (object) $full_html_format;
+  filter_format_save($full_html_format);
+
+  $themes = array('crm_core_demo');
+  theme_enable($themes);
+
+  // Set the default theme.
+  variable_set('theme_default', 'crm_core_demo');
+
+  // set some variables for jquery update and compact forms
+  // these should apply in all instances of CRM Core Demo, regardless of what features are enabled
+  variable_set('compact_forms_ids', 'user-login-form
+crm-core-profile-entry-form');
+  variable_set('jquery_update_compression_type', 'min');
+  variable_set('jquery_update_jquery_cdn', 'google');
+  variable_set('jquery_update_jquery_version', '1.8');
+
+  // sync the admin user with a contact
+  if ($account = user_load(1)) {
+	  crm_user_sync_sync($account);
+  }
+}
+
+/**
+ * Implements hook_install_tasks().
+ *
+ * Perform some taks after features have been extracted.
+ */
+function inkamp_install_tasks() {
+  $tasks = array(
+    '_inkamp_features_form' => array(
+      'type' => 'form',
+      'display' => TRUE,
+      'display_name' => 'Install features',
+    ),
+    '_inkamp_feature_config_form' => array(
+      'type' => 'form',
+      'display' => TRUE,
+      'display_name' => 'Configure features',
+    ),
+
+  );
+  return $tasks;
+}
+
+function _inkamp_features() {
+  return array(
+    'crm_core_blog' => array(
+      'title' => st('CRM Core Blog'),
+      'description' => st('CRM Core blog provides blog by author and a user comment report'),
+    ),
+    'crm_core_news' => array(
+      'title' => st('CRM Core News'),
+      'description' => st('CRM Core news provides a news content type and associated views and reports'),
+    ),
+    'crm_core_donation' => array(
+      'title' => st('CRM Core Donation'),
+      'description' => st('CRM Core Donation allows the creation of one step donation pages, Personal donation pages (PDP) payment integration, recurring payments, leaderboards and so much more'),
+    ),
+    'crm_core_event_registration' => array(
+      'title' => st('CRM Core Event Registration'),
+      'description' => st('CRM Core Event Registration allows the creation of event registration forms for paid and non-paid event types'),
+    ),
+    'crm_core_node_claim' => array(
+      'title' => st('CRM Core Node Claim'),
+      'description' => st('CRM Core Node Claim allows users to claim and take ownership of a content type'),
+    ),
+    'crm_core_petition' => array(
+      'title' => st('CRM Core Petition'),
+      'description' => st('CRM Core Petition allows users to sign online petitions'),
+    ),
+    'crm_core_volunteer' => array(
+      'title' => st('CRM Core Volunteer'),
+      'description' => st('CRM Core Volunteer allows signing up for volunteer opportunities'),
+     ),
+  );
+}
+
+/**
+ * Install crm core features
+ */
+function _inkamp_features_form($form, &$form_state) {
+  $features = _inkamp_features();
+
+  foreach ($features as $module => $info) {
+    $form['features'][$module] = array(
+      '#type' => 'checkbox',
+      '#title' => $info['title'],
+      '#description' => $info['description'],
+    );
+  }
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => st('Next'),
+  );
+  return $form;
+}
+
+/**
+ * Submission handler
+ */
+function _inkamp_features_form_submit($form, &$form_state) {
+
+  $features = _inkamp_features();
+  $modules = array();
+
+  // enable each features
+  foreach (array_keys($features) as $feature) {
+    if ($form_state['values'][$feature] == 1) {
+      $modules[] = $feature;
+    }
+  }
+
+  module_enable($modules);
+
+  // let's install test data and turn on modules that might be breaking other things
+  /*
+  $other_modules = array(
+    'deploy',
+    'crm_core_demo_content'
+  );
+
+  module_enable($other_modules);
+  */
+
+}
+
+/**
+ * Configure features installed
+ */
+function _inkamp_feature_config_form($form, &$form_state) {
+  // @todo: load configuration forms here for features installed.
+  $form['sample_data'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Sample data'),
+    '#weight' => 5,
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  $form['sample_data']['sample_data_toggle'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Import sample data?'),
+    '#description' => t('Checking this will import sample data for the feature(s) you have selected.'),
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => st('Next'),
+  );
+
+  return $form;
+}
+
+/**
+ * Submission callback
+ */
+function _inkamp_feature_config_form_submit($form, &$form_state) {
+
+  // work around for https://github.com/Trellon/crmcoredemo/issues/1 (see 2nd error)
+  // this needs to be moved into it's separate step
+  if (module_exists('crm_core_event_registration')) {
+    module_load_include('inc', 'crm_core_event_registration', 'crm_core_event_registration.views_default');
+    $views = crm_core_event_registration_views_default_views();
+    foreach ($views as $view) {
+      if ($view->disabled) {
+        $view->disabled = FALSE;
+        $view->save();
+      }
+    }
+  }
+
+  if (module_exists('crm_core_petition')) {
+    module_load_include('inc', 'crm_core_petition', 'crm_core_petition.views_default');
+    $views = crm_core_petition_views_default_views();
+    foreach ($views as $view) {
+      if ($view->disabled) {
+        $view->disabled = FALSE;
+        $view->save();
+      }
+    }
+  }
+
+  if ((bool)$form_state['values']['sample_data_toggle'] === FALSE) {
+      return;
+  }
+
+  // Install sample data.
+  // @todo: not totally operational yet.
+  $modules = array();
+  foreach ($modules as $module) {
+    if (module_exists($module)) {
+      // look for something like crm_core_volunteer.sample_data.inc
+      module_load_include('inc', $module, $module . '.sample_data');
+      $function = $module . '_sample_data';
+      if (function_exists($function)) {
+        $function();
+      }
+    }
+  }
+
+
+
+
+}
+
+/**
+ * Implements hook_install_tasks_alter().
+ */
+function inkamp_install_tasks_alter(&$tasks, $install_state) {
+
+  $tasks['install_finished']['function'] = 'inkamp_install_finished';
+
+  $tasks['install_select_profile']['display'] = FALSE;
+  $tasks['install_select_locale']['display'] = FALSE;
+  $tasks['install_select_locale']['run'] = INSTALL_TASK_SKIP;
+
+  // The "Welcome" screen needs to come after the first two steps
+  // (profile and language selection), despite the fact that they are disabled.
+  $new_task['install_welcome'] = array(
+    'display' => TRUE,
+    'display_name' => st('Welcome'),
+    'type' => 'form',
+    'run' => isset($install_state['parameters']['welcome']) ? INSTALL_TASK_SKIP : INSTALL_TASK_RUN_IF_REACHED,
+  );
+  $old_tasks = $tasks;
+  $tasks = array_slice($old_tasks, 0, 2) + $new_task + array_slice($old_tasks, 2);
+}
+
+
+/**
+ * Task callback: shows the welcome screen.
+ */
+function install_welcome($form, &$form_state, &$install_state) {
+  drupal_set_title(st('Welcome to CRM Core Demo'));
+
+  $message = st('Thank you for using CRM Core demo!') . '<br />';
+  $message .= '<p>' . st('This drupal distribution will demonstrate some of the powerful features built with CRM Core technology.') . '</p>';
+  $message .= '<p>' . st('Be sure to join us on ' . l('crmcore.org', 'http://crmcore.org') .
+    ' for the latest updates, discussions and share your comments and feedback with us.') . '</p>';
+
+  $form = array();
+  $form['welcome_message'] = array(
+    '#markup' => $message,
+  );
+  $form['actions'] = array(
+    '#type' => 'actions',
+  );
+  $form['actions']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => st("Get started!"),
+    '#weight' => 10,
+  );
+  return $form;
+}
+
+/**
+ * Install welcome submission handler
+ */
+function install_welcome_submit($form, &$form_state) {
+  global $install_state;
+
+  $install_state['parameters']['welcome'] = 'done';
+  $install_state['parameters']['locale'] = 'en';
+}
+
+/**
+ * Task finished callback
+ */
+function inkamp_install_finished(&$install_state) {
+
+  drupal_set_title(st('@drupal installation complete', array('@drupal' => drupal_install_profile_distribution_name())), PASS_THROUGH);
+  $messages = drupal_set_message();
+
+  // Remember the profile which was used.
+  variable_set('install_profile', drupal_get_profile());
+  variable_set('install_task', 'done');
+
+  // Flush all caches to ensure that any full bootstraps during the installer
+  // do not leave stale cached data, and that any content types or other items
+  // registered by the install profile are registered correctly.
+  drupal_flush_all_caches();
+
+  // Install profiles are always loaded last
+  db_update('system')
+    ->fields(array('weight' => 1000))
+    ->condition('type', 'module')
+    ->condition('name', drupal_get_profile())
+    ->execute();
+
+  // Cache a fully-built schema.
+  drupal_get_schema(NULL, TRUE);
+
+  // Run cron to populate update status tables (if available) so that users
+  // will be warned if they've installed an out of date Drupal version.
+  // Will also trigger indexing of profile-supplied content or feeds.
+  drupal_cron_run();
+
+  if (isset($messages['error'])) {
+    $output = '<p>' . (isset($messages['error']) ? st('Review the messages above before visiting <a href="@url">your new site</a>.', array('@url' => url(''))) : st('<a href="@url">Visit your new site</a>.', array('@url' => url('')))) . '</p>';
+    return $output;
+  }
+  else {
+    // Since any module can add a drupal_set_message, this can bug the user
+    // when we redirect him to the front page. For a better user experience,
+    // remove all the message that are only "notifications" message.
+    drupal_get_messages('status', TRUE);
+    drupal_get_messages('completed', TRUE);
+    // Migrate adds its messages under the wrong type, see #1659150.
+    drupal_get_messages('ok', TRUE);
+
+    // If we don't install drupal using Drush, redirect the user to the front
+    // page.
+    if (!drupal_is_cli()) {
+        drupal_goto('node');
+    }
+  }
+}
