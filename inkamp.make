@@ -2,8 +2,17 @@
 core = "7.x"
 api = "2"
 
-; +++++ Modules +++++
+; +++++ Features +++++
 
+projects[inkota_petition][version] = 1.0-alpha2
+projects[inkota_petition][type] = module
+projects[inkota_petitions][subdir] = "custom"
+projects[inkota_petition][location] = http://features.otro-mundo.org/fserver
+
+projects[inkota_multilingual][version] = 1.0-alpha2
+projects[inkota_multilingual][type] = module
+projects[inkota_multilingual][subdir] = "custom"
+projects[inkota_multilingual][location] = http://features.otro-mundo.org/fserver
 
 ; +++++ Themes +++++
 
@@ -15,10 +24,10 @@ projects[omega][version] = "4.0-beta3"
 ;projects[omega][download][branch] = 7.x-3.x
 
 ; mcf
-projects[mcf][type] = "theme"
-projects[mcf][version] = "1.0-alpha1"
-projects[mcf][download][type] = "url"
-projects[mcf][download][url] = "http://features.otro-mundo.org/sites/features.otro-mundo.org/files/fserver/mcf.tar_.gz"
+projects[mcf_theme][type] = "theme"
+projects[mcf_theme][version] = "1.0-alpha1"
+;projects[mcf][download][type] = "url"
+projects[mcf_theme][location] = http://features.otro-mundo.org/fserver
 
 
 ; +++++++ Libraries +++++++
