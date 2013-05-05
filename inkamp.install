@@ -10,7 +10,7 @@
 function inkamp_install() {
 
   // enable the default theme
-  $default_theme = variable_get('theme_default', 'mcf');
+  $default_theme = variable_get('theme_default', 'mcf_theme');
 
   // Enable some standard blocks.
   // removing standard block configuration
@@ -281,11 +281,11 @@ function inkamp_install() {
   $full_html_format = (object) $full_html_format;
   filter_format_save($full_html_format);
 
-  $themes = array('mcf');
+  $themes = array('mcf_theme');
   theme_enable($themes);
 
   // Set the default theme.
-  variable_set('theme_default', 'mcf');
+  variable_set('theme_default', 'mcf_theme');
 
   // set some variables for jquery update and compact forms
   // these should apply in all instances of CRM Core Demo, regardless of what features are enabled
@@ -330,9 +330,9 @@ function inkamp_install_tasks_alter(&$tasks, $install_state) {
 function install_welcome($form, &$form_state, &$install_state) {
   drupal_set_title(st('Welcome to CRM Core Demo'));
 
-  $message = st('Thank you for using CRM Core demo!') . '<br />';
-  $message .= '<p>' . st('This drupal distribution will demonstrate some of the powerful features built with CRM Core technology.') . '</p>';
-  $message .= '<p>' . st('Be sure to join us on ' . l('crmcore.org', 'http://crmcore.org') .
+  $message = st('Thank you for using INKamp!') . '<br />';
+  $message .= '<p>' . st('This drupal distribution will help you get started quickly with your campaign.') . '</p>';
+  $message .= '<p>' . st('Be sure to join us on ' . l('drupalforgood.eu', 'http://drupalforgood.eu') .
     ' for the latest updates, discussions and share your comments and feedback with us.') . '</p>';
 
   $form = array();
