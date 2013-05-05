@@ -13,8 +13,8 @@ projects[drupal][download][url] = "http://files.aegir.cc/dev/drupal-7.22.1.tar.g
 includes[] = "drupal-org.make"
 
 ; include the profiler library
-libraries[profiler][download][type] = "get"
-libraries[profiler][download][url] = "http://ftp.drupal.org/files/projects/profiler-7.x-2.0-beta1.tar.gz"
+;libraries[profiler][download][type] = "get"
+;libraries[profiler][download][url] = "http://ftp.drupal.org/files/projects/profiler-7.x-2.0-beta1.tar.gz"
 
 projects[inkamp][type] = "profile"
 projects[inkamp][download][type] = "git"
