@@ -59,6 +59,11 @@ dependencies[] = pathologic
 ; dependencies[] = uuid_features
 ; dependencies[] = uuid_node
 ; dependencies[] = uuid_file
+dependencies[] = ds
+dependencies[] = media
+dependencies[] = pgbar
+dependencies[] = web_widgets
+
 
 ; Install CRM Core modules.
 ;dependencies[] = crm_core

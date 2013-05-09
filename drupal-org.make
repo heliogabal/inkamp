@@ -191,9 +191,9 @@ projects[socialshareprivacy][version] = 1.10
 projects[socialshareprivacy][type] = "module"
 projects[socialshareprivacy][subdir] = "contrib"
 
-projects[site_verify][version] = 1.0
-projects[site_verify][type] = "module"
-projects[site_verify][subdir] = "contrib"
+;projects[site_verify][version] = 1.0
+;projects[site_verify][type] = "module"
+;projects[site_verify][subdir] = "contrib"
 
 projects[transliteration][version] = 3.1
 projects[transliteration][type] = "module"
@@ -239,9 +239,9 @@ projects[views_bulk_operations][subdir] = "contrib"
 ;projects[precision][subdir] = "contrib"
 
 ; rubik
-projects[rubik][type] = "theme"
-projects[rubik][version] = "4.0-beta8"
-projects[rubik][subdir] = "contrib"
+;projects[rubik][type] = "theme"
+;projects[rubik][version] = "4.0-beta8"
+;projects[rubik][subdir] = "contrib"
 
 ; tao
 ;projects[tao][type] = "theme"
@@ -249,9 +249,9 @@ projects[rubik][subdir] = "contrib"
 ;projects[tao][subdir] = "contrib"
 
 ; shiny
-projects[shiny][type] = "theme"
-projects[shiny][version] = "1.1"
-projects[shiny][subdir] = "contrib"
+;projects[shiny][type] = "theme"
+;projects[shiny][version] = "1.1"
+;projects[shiny][subdir] = "contrib"
 
 ; poultry
 ;projects[poultry][type] = "theme"

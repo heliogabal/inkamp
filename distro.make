@@ -20,3 +20,11 @@ projects[inkamp][type] = "profile"
 projects[inkamp][download][type] = "git"
 projects[inkamp][download][url] = "git@github.com:heliogabal/inkamp.git"
 projects[inkamp][download][branch] = "master"
+
+projects[pgbar][version] = 1.0
+projects[pgbar][type] = "module"
+projects[pgbar][subdir] = "contrib"
+
+projects[web_widgets][version] = 1.0-alpha2
+projects[web_widgets][type] = "module"
+projects[web_widgets][subdir] = "contrib"
